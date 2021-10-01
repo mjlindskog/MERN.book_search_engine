@@ -10,8 +10,8 @@
     "build": "cd client && npm run build"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Mark Lindskog",
+  "license": "MIT",
   "devDependencies": {
     "concurrently": "^5.1.0"
   }
