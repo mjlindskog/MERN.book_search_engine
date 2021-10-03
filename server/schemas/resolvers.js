@@ -23,7 +23,7 @@ const resolvers = {
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
             if (!user) {
-                throw new AuthenticationError('Invalid login information');
+                throw new AuthenticationError('Could not find requested user');
             }
             
             const correctPassword = await user.isCorrectPassword(password);
@@ -38,7 +38,7 @@ const resolvers = {
             if (context.user) {
                 const updateUser = await User.findOneAndUpdate(
                     { _id: context.user_id },
-                    { $addToSet: { savedBooks: input } },
+                    { $push: { savedBooks: input } },
                     { new: true, runValidators: true }
                 );
                 return updateUser;
@@ -47,7 +47,7 @@ const resolvers = {
         },
         removeBook: async (parent, { bookId }, context) => {
             if (context.user) {
-                const updateUser = await User.findOneAndUpdate(
+                const updateUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
                     { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
